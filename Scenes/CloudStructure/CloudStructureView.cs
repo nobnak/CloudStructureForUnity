@@ -2,9 +2,6 @@ using CloudStructures;
 using CloudStructures.Converters;
 using CloudStructures.Structures;
 using MessagePack;
-using StackExchange.Redis;
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
@@ -18,13 +15,12 @@ public class CloudStructureView : MonoBehaviour {
     protected Rect windowSize = new Rect(10, 10, 300, 300);
 
     protected RedisConnection redis;
-
-    protected RedisString<Data> redisData;
+    protected RedisString<Creature> redisData;
 
     #region unity
     private void OnEnable() {
         redis = new RedisConnection(new RedisConfig(name, server), new MessagePackConverter());
-        redisData = new RedisString<Data>(redis, KEY_TEST, null);
+        redisData = new RedisString<Creature>(redis, KEY_TEST, null);
     }
     private void OnDisable() {
         if (redis != null) {
@@ -46,7 +42,7 @@ public class CloudStructureView : MonoBehaviour {
 
         using (new GUILayout.VerticalScope()) {
             if (GUILayout.Button("Set")) {
-                var data = new Data() {
+                var data = new Creature() {
                     id = Time.frameCount,
                     position_x = Mathf.FloorToInt(10f * Random.value),
                     position_y = Mathf.FloorToInt(10f * Random.value),
@@ -71,7 +67,7 @@ public class CloudStructureView : MonoBehaviour {
 
     #region definition
     [MessagePackObject]
-    public class Data {
+    public class Creature {
         [Key(0)]
         public int id;
         [Key(1)]
@@ -81,7 +77,6 @@ public class CloudStructureView : MonoBehaviour {
         [Key(3)]
         public long birthTime;
 
-#if true
         [IgnoreMember]
         public Vector2 position { 
             get => new Vector2(position_x, position_y);  
@@ -90,7 +85,6 @@ public class CloudStructureView : MonoBehaviour {
                 position_y = value.y;
             }
         }
-#endif
 
 #region interafce
 
