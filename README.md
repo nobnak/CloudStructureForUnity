@@ -34,11 +34,6 @@ RedisConnection redis = new RedisConnection(new RedisConfig(name, server), new M
 RedisString<Creature> redisData = new RedisString<Creature>(redis, KEY_TEST, null);
 ```
 
-## Dispose
-```csharp
-redis.Dispose();
-```
-
 ## Send
 ```csharp
 Creature data;
@@ -53,4 +48,9 @@ redisData.GetAsync().ContinueWith(t => {
       Debug.Log($"Get. {data}");
   }
 }).Wait();
+```
+
+## Dispose
+```csharp
+redis.Dispose();
 ```
